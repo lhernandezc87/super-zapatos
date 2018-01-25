@@ -304,10 +304,88 @@ class ShoeStoreForm extends React.Component {
 }
 
 
+class ShoeList extends React.Component {
+  state = {
+    storeId: this.props.storeId,
+    shoeList: defaultShoeList, 
+  }
+
+  handleCreateFormSubmit = (shoe) => {
+    this.createShoe(shoe);
+  };
+
+  handleEditFormSubmit = (attrs) => {
+    this.updateShoe(attrs);
+  };
+
+  handleTrashClick = (shoeId) => {
+    this.deleteShoe(shoeId);
+  };
+
+  createShoe = (shoe) => {
+    const newShoe = {};
+    newShoe.name = shoeStore.name;
+    newShoe.address = shoeStore.address;
+    newShoe.id = this.state.shoeStoreList.length + 1;
+    const newShoeList = [...this.state.shoeList, newShoe];
+    this.setState({shoeList: newShoeList});
+  };
+
+  updateShoe = (attrs) => {
+    this.setState({
+      shoeList: this.state.shoeList.map((shoe) => {
+        if (shoe.id === attrs.id) {
+          return Object.assign({}, shoe, {
+            name: attrs.name,
+            description: attrs.description,
+            price: attrs.price,
+            total: attrs.total,
+            storeId: attrs.storeId,
+          });
+        } else {
+          return shoe;
+        }
+      }),
+    });
+  };
+
+  deleteShoe = (shoeId) => {
+    this.setState({
+      shoeList: this.state.shoeList.filter(t => t.id !== shoeId),
+    });
+
+  };
+
+  render() {
+    return (     
+      <div className='shoeContainer'>
+        <EditableShoeList
+          shoes={this.state.shoeList}
+          onFormSubmit={this.handleEditFormSubmit}
+          onTrashClick={this.handleTrashClick}
+        />
+        <ToggleableShoeForm
+          onFormSubmit={this.handleCreateFormSubmit}
+        />
+      </div>     
+    );
+  }
+
+}
+
+
 const defaultStoreList = [
   {id: 1, name: 'Payless San Jose', address: 'San Jose, 25 m este del teatro nacional'},
   {id: 2, name: 'Payless Heredia', address: 'Heredia, 100 m oeste del fortin'},
   {id: 3, name: 'Payless Cartago', address: 'cartago, 150 m sur de tenchas'},
 ];
+
+const defaultShoeList = [
+  {id: 1, name: 'mocacin', description: 'color negro', price: 16000, total: 3, storeId: 2},
+  {id: 1, name: 'chancletas', description: 'color azul', price: 6000, total: 2, storeId: 2},
+  {id: 1, name: 'mocacin', description: 'color rojo', price: 16000, total: 3, storeId: 1},
+  {id: 1, name: 'tacos', description: 'color verde', price: 45000, total: 1, storeId: 1},
+];
+
 
 export default App;
