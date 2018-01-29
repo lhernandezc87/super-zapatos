@@ -1,9 +1,15 @@
+.appContainer{
+  float: left;
+}
+
 .storesContainer{
+  float: left;
   text-align: center;
-  width: 100%;
+  width: 250px;
   background-color: #DDDDDD;
   align-content: center;
   padding: 30px;
+  margin-right: 10;
 }
 
 .storeContainer{
@@ -17,6 +23,15 @@
   width: 50%;
 
 
+}
+
+.shoesContainer{
+  margin-left: 265px;
+  text-align: center;
+  width: 900px;
+  background-color: red;
+  align-content: center;
+  padding: 30px;
 }
 
  /*

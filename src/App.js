@@ -11,13 +11,15 @@ class App extends Component {
   }
 }
 
-
 class ShoeStoreListDashboard extends React.Component {
   state = {
     shoeStoreList: defaultStoreList,
+    shoeList: defaultShoeList,
+    storeId: 1,
   };
 
-
+  //cargar tiendas
+  //componentWillUnmount
   handleCreateFormSubmit = (shoeStore) => {
     this.createShoeStore(shoeStore);
   };
@@ -28,6 +30,10 @@ class ShoeStoreListDashboard extends React.Component {
 
   handleTrashClick = (shoeStoreId) => {
     this.deleteShoeStore(shoeStoreId);
+  };
+
+  handleShowShoes = (shoeStoreId) => {
+    this.setState({shoeStoreId: shoeStoreId});
   };
 
   createShoeStore = (shoeStore) => {
@@ -61,18 +67,79 @@ class ShoeStoreListDashboard extends React.Component {
 
   };
 
+  //shoe code
+  handleCreateFormSubmitShoe = (shoe) => {
+    this.createShoe(shoe);
+  };
+
+  handleEditFormSubmitShoe = (attrs) => {
+    this.updateShoe(attrs);
+  };
+
+  handleTrashClickShoe = (shoeId) => {
+    this.deleteShoe(shoeId);
+  };
+
+  createShoe = (shoe) => {
+    const newShoe = {};
+    newShoe.name = shoe.name;
+    newShoe.description = shoe.description;
+    newShoe.price = shoe.price;
+    newShoe.total = shoe.total;
+    newShoe.storeId = this.state.storeId;
+    newShoe.id = this.state.shoeList.length + 1;
+    const newShoeList = [...this.state.shoeList, newShoe];
+    this.setState({shoeList: newShoeList});
+  };
+
+  updateShoe = (attrs) => {
+    this.setState({
+      shoeList: this.state.shoeList.map((shoe) => {
+        if (shoe.id === attrs.id) {
+          return Object.assign({}, shoe, {
+            name: attrs.name,
+            description: attrs.description,
+            price: attrs.price,
+            total: attrs.total,
+            storeId: this.state.storeId,
+          });
+        } else {
+          return shoe;
+        }
+      }),
+    });
+  };
+
+  deleteShoe = (shoeId) => {
+    this.setState({
+      shoeList: this.state.shoeList.filter(t => t.id !== shoeId),
+    });
+
+  };
+
   render() {
-    return (     
-      <div className='storesContainer'>
-        <EditableShoeStoreList
-          shoeStores={this.state.shoeStoreList}
-          onFormSubmit={this.handleEditFormSubmit}
-          onTrashClick={this.handleTrashClick}
-        />
-        <ToggleableShoeStoreForm
-          onFormSubmit={this.handleCreateFormSubmit}
-        />
-      </div>     
+    const currentShoeList = this.state.shoeList.filter(s => s.storeId === this.state.storeId);
+    return (
+      <div className="appContainer">     
+        <div className='storesContainer'>
+          <EditableShoeStoreList
+            shoeStores={this.state.shoeStoreList}
+            onFormSubmit={this.handleEditFormSubmit}
+            onTrashClick={this.handleTrashClick}
+          />
+          <ToggleableShoeStoreForm
+            onFormSubmit={this.handleCreateFormSubmit}
+          />
+        </div>
+        <div className="shoesContainer">
+          <ShoeListDashboard 
+            onFormSubmitShoe={this.handleEditFormSubmitShoe}
+            onTrashClickShoe={this.handleTrashClickShoe}
+            CreateFormSubmitShoe={this.handleCreateFormSubmitShoe}
+            shoeList={currentShoeList}
+          />
+        </div>
+      </div>   
     );
   }
 }
@@ -304,74 +371,285 @@ class ShoeStoreForm extends React.Component {
 }
 
 
-class ShoeList extends React.Component {
-  state = {
-    storeId: this.props.storeId,
-    shoeList: defaultShoeList, 
-  }
-
-  handleCreateFormSubmit = (shoe) => {
-    this.createShoe(shoe);
-  };
-
-  handleEditFormSubmit = (attrs) => {
-    this.updateShoe(attrs);
-  };
-
-  handleTrashClick = (shoeId) => {
-    this.deleteShoe(shoeId);
-  };
-
-  createShoe = (shoe) => {
-    const newShoe = {};
-    newShoe.name = shoeStore.name;
-    newShoe.address = shoeStore.address;
-    newShoe.id = this.state.shoeStoreList.length + 1;
-    const newShoeList = [...this.state.shoeList, newShoe];
-    this.setState({shoeList: newShoeList});
-  };
-
-  updateShoe = (attrs) => {
-    this.setState({
-      shoeList: this.state.shoeList.map((shoe) => {
-        if (shoe.id === attrs.id) {
-          return Object.assign({}, shoe, {
-            name: attrs.name,
-            description: attrs.description,
-            price: attrs.price,
-            total: attrs.total,
-            storeId: attrs.storeId,
-          });
-        } else {
-          return shoe;
-        }
-      }),
-    });
-  };
-
-  deleteShoe = (shoeId) => {
-    this.setState({
-      shoeList: this.state.shoeList.filter(t => t.id !== shoeId),
-    });
-
-  };
+class ShoeListDashboard extends React.Component {
 
   render() {
     return (     
       <div className='shoeContainer'>
         <EditableShoeList
-          shoes={this.state.shoeList}
-          onFormSubmit={this.handleEditFormSubmit}
-          onTrashClick={this.handleTrashClick}
+          shoes={this.props.shoeList}
+          onFormSubmitShoe={this.props.onFormSubmitShoe}
+          onTrashClickShoe={this.props.onTrashClickShoe}
         />
         <ToggleableShoeForm
-          onFormSubmit={this.handleCreateFormSubmit}
+          onFormSubmitShoe={this.props.CreateFormSubmitShoe}
         />
       </div>     
     );
   }
 
 }
+
+class ToggleableShoeForm extends React.Component {
+
+  state = {
+    isOpen: false,
+  };
+
+  handleFormOpen = () => {
+    this.setState({ isOpen: true });
+  };
+
+  handleFormCloseShoe = () => {
+    this.setState({ isOpen: false });
+  };
+
+  handleFormSubmitShoe = (shoe) => {
+    this.props.onFormSubmitShoe(shoe);
+    this.setState({ isOpen: false });
+  };
+
+  render() {
+    if (this.state.isOpen) {
+      return (
+        <ShoeForm
+          onFormSubmitShoe={this.handleFormSubmitShoe}
+          onFormCloseShoe={this.handleFormCloseShoe}
+        />
+      );
+    } else {
+      return (
+        <div className='ui basic content center aligned segment'>
+          <button
+            className='ui basic button icon'
+            onClick={this.handleFormOpen}
+          >
+            <i className='plus icon' />
+          </button>
+        </div>
+      );
+    }
+  }
+}
+
+class EditableShoeList extends React.Component {
+  render() {
+    const shoes = this.props.shoes.map((shoe) => (
+      <EditableShoe
+        key={shoe.id}
+        id={shoe.id}
+        name={shoe.name}
+        description={shoe.description}
+        price={shoe.price}
+        total={shoe.total}
+        storeId={shoe.storeId}
+        onFormSubmitShoe={this.props.onFormSubmitShoe}
+        onTrashClickShoe={this.props.onTrashClickShoe}
+      />
+    ));
+    return (
+      <div id='shoes'>
+        {shoes}
+      </div>
+    );
+  }
+}
+
+
+class EditableShoe extends React.Component {
+  state = {
+    editFormOpen: false,
+  };
+
+  handleEditClickShoe = () => {
+    this.openForm();
+  };
+
+  handleFormCloseShoe = () => {
+    this.closeForm();
+  };
+
+  handleSubmitShoe = (shoe) => {
+    this.props.onFormSubmitShoe(shoe);
+    this.closeForm();
+  };
+
+  closeForm = () => {
+    this.setState({ editFormOpen: false });
+  };
+
+  openForm = () => {
+    this.setState({ editFormOpen: true });
+  };
+
+  render() {
+    if (this.state.editFormOpen) {
+      return (
+        <ShoeForm
+          id={this.props.id}
+          name={this.props.name}
+          description={this.props.description}
+          price={this.props.price}
+          total={this.props.total}
+          storeId={this.props.storeId}
+          onFormSubmitShoe={this.handleSubmitShoe}
+          onFormCloseShoe={this.handleFormCloseShoe}
+        />
+      );
+    } else {
+      return (
+        <Shoe
+          id={this.props.id}
+          name={this.props.name}
+          description={this.props.description}
+          price={this.props.price}
+          total={this.props.total}
+          storeId={this.props.storeId}
+          onEditClickShoe={this.handleEditClickShoe}
+          onTrashClickShoe={this.props.onTrashClickShoe}
+        />
+      );
+    }
+  }
+}
+
+class Shoe extends React.Component {
+
+
+  handleTrashClickShoe = () => {
+    this.props.onTrashClickShoe(this.props.id);
+  };
+
+  render() {
+    return (
+      <div className='ui centered card'>
+        <div className='content'>
+          <div className='header'>
+            {this.props.name}
+          </div>
+          <div className='meta'>
+            {this.props.description}
+          </div>
+          <div className='meta'>
+            {this.props.price}
+          </div>
+          <div className='meta'>
+            {this.props.total}
+          </div>
+          <div className='extra content'>
+            <span
+              className='right floated edit icon'
+              onClick={this.props.onEditClickShoe}
+            >
+              <i className='edit icon' />
+            </span>
+            <span
+              className='right floated trash icon'
+              onClick={this.handleTrashClickShoe}
+            >
+              <i className='trash icon' />
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+class ShoeForm extends React.Component {
+  
+  state = {
+    fields: {
+      name:this.props.name || '',
+      description: this.props.description || '',
+      price: this.props.price || '',
+      total: this.props.total || '',
+    }
+  };
+
+  onChangeText = (evt) => {
+    const fields = this.state.fields;
+    fields[evt.target.name] = evt.target.value;
+    this.setState({fields: fields});
+  };
+
+  handleSubmitShoe = () => {
+    this.props.onFormSubmitShoe({
+      id: this.props.id,
+      name: this.state.fields.name,
+      description: this.state.fields.description,
+      price: this.state.fields.price,
+      total: this.state.fields.total,
+    });
+  };
+
+  render() {
+    const submitText = this.props.id ? 'Update' : 'Add shoe';
+    return (
+      <div className='ui centered card'>
+        <div className='content'>
+          <div className='ui form'>
+            <div className='field'>
+              <label>Name</label>
+              <input
+                type='text'
+                placeholder='Name'
+                name='name'
+                value={this.state.fields.name}
+                onChange={this.onChangeText}
+              />
+            </div>
+            <div className='field'>
+              <label>Description</label>
+              <input
+                type='text'
+                placeholder='Description'
+                name='description'
+                value={this.state.fields.description}
+                onChange={this.onChangeText}
+              />
+            </div>
+             <div className='field'>
+              <label>Price</label>
+              <input
+                type='text'
+                placeholder='Price'
+                name='price'
+                value={this.state.fields.price}
+                onChange={this.onChangeText}
+              />
+            </div>
+             <div className='field'>
+              <label>Total</label>
+              <input
+                type='text'
+                placeholder='Total'
+                name='total'
+                value={this.state.fields.total}
+                onChange={this.onChangeText}
+              />
+            </div>
+            <div className='ui two bottom attached buttons'>
+              <button
+                className='ui basic blue button'
+                onClick={this.handleSubmitShoe}
+              >
+                {submitText}
+              </button>
+              <button
+                className='ui basic red button'
+                onClick={this.props.onFormCloseShoe}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
 
 
 const defaultStoreList = [
@@ -382,10 +660,9 @@ const defaultStoreList = [
 
 const defaultShoeList = [
   {id: 1, name: 'mocacin', description: 'color negro', price: 16000, total: 3, storeId: 2},
-  {id: 1, name: 'chancletas', description: 'color azul', price: 6000, total: 2, storeId: 2},
-  {id: 1, name: 'mocacin', description: 'color rojo', price: 16000, total: 3, storeId: 1},
-  {id: 1, name: 'tacos', description: 'color verde', price: 45000, total: 1, storeId: 1},
+  {id: 2, name: 'chancletas', description: 'color azul', price: 6000, total: 2, storeId: 2},
+  {id: 3, name: 'mocacin', description: 'color rojo', price: 16000, total: 3, storeId: 1},
+  {id: 4, name: 'tacos', description: 'color verde', price: 45000, total: 1, storeId: 1},
 ];
-
 
 export default App;
