@@ -5,6 +5,7 @@ import ShoeListDashboard from './ShoeListDashboard.js';
 
 
 export default class ShoeStoreListDashboard extends React.Component {
+
   state = {
     shoeStoreList: defaultStoreList,
     shoeList: defaultShoeList,

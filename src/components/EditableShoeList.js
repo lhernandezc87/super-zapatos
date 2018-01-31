@@ -3,7 +3,6 @@ import EditableShoe from './EditableShoe.js';
 
 export default class EditableShoeList extends React.Component {
   render() {
-    const showTableHeader = this.props.shoes.length > 0 ? true : false;
     const shoes = this.props.shoes.map((shoe) => (
       <EditableShoe
         key={shoe.id}
@@ -17,8 +16,6 @@ export default class EditableShoeList extends React.Component {
         onTrashClickShoe={this.props.onTrashClickShoe}
       />
     ));
-
-    if (shoes){
       return (
         <div className='shoes'>
           <div className='shoeTableHeader'>
@@ -32,12 +29,5 @@ export default class EditableShoeList extends React.Component {
           </div> 
         </div>  
       );
-    }else{
-      return (
-        <div className='shoes'>
-          {shoes}
-        </div>
-      );
-    }
   }
 }
