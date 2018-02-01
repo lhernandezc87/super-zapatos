@@ -1,9 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+
+
+import ShoeStoreListDashboard from './components/ShoeStoreListDashboard.js';
+import store from './store';
+
 import './index.css';
+import './App.css';
+
+
+const Appi = () => (
+  <Router>
+    <Switch>
+      <Route exact path='/' component={ShoeStoreListDashboard}/>
+    </Switch>
+  </Router>
+)
 
 ReactDOM.render(
-  <App />,
-  document.getElementById('root')
+  <Provider store={store}>
+  	<Appi />,
+  </Provider>, document.getElementById('root')
 );
