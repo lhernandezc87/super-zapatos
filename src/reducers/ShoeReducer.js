@@ -1,4 +1,4 @@
-export function addShoe(state = {shoeList: []}, action) {
+export default function addShoe(state = {shoeList: []}, action) {
   switch (action.type){
     case 'ADD_SHOE':
       return {

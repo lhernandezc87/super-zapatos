@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class ShoeStoreForm extends React.Component {
   state = {
@@ -15,7 +16,6 @@ export default class ShoeStoreForm extends React.Component {
   };
 
   handleSubmit = () => {
-    console.log('this.props.id es' + this.props.id);
     this.props.onFormSubmit({
       id: this.props.id,
       name: this.state.fields.name,
@@ -68,4 +68,8 @@ export default class ShoeStoreForm extends React.Component {
       </div>
     );
   }
+}
+
+ShoeStoreForm.propTypes = {
+  onFormSubmit: PropTypes.func.isRequired
 }

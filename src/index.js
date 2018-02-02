@@ -21,6 +21,6 @@ const Appi = () => (
 
 ReactDOM.render(
   <Provider store={store}>
-  	<Appi />,
+  	<Appi />
   </Provider>, document.getElementById('root')
 );

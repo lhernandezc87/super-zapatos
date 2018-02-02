@@ -29,10 +29,10 @@ class ShoeStoreListDashboard extends React.Component {
   
   componentDidMount(){
     defaultStoreList.map((store) => (
-      this.props.addStore(store.name, store.address)
+      this.props.addStore(store.id, store.name, store.address)
     ));
     defaultShoeList.map((shoe) => (
-      this.props.addShoe(shoe.name, shoe.description, shoe.price, shoe.total, shoe.storeId)
+      this.props.addShoe(shoe.id, shoe.name, shoe.description, shoe.price, shoe.total, shoe.storeId)
     ));
   };
 
@@ -48,12 +48,9 @@ class ShoeStoreListDashboard extends React.Component {
     this.deleteShoeStore(shoeStoreId);
   };
 
-  handleShowShoes = (shoeStoreId) => {
-    this.setState({shoeStoreId: shoeStoreId});
-  };
 
   createShoeStore = (shoeStore) => {
-    const newStoreId = this.state.shoeStoreList.length + 1;
+    const newStoreId = this.props.shoeStores.length + 1;
     this.props.addStore(newStoreId.id, shoeStore.name, shoeStore.address);
   };
 
@@ -79,7 +76,7 @@ class ShoeStoreListDashboard extends React.Component {
   };
 
   handleSelectedStoreId = (storeId) => {
-    this.setState({storeId: storeId});
+    this.props.updateStoreId(storeId);
   };
 
   createShoe = (shoe) => {
@@ -96,7 +93,8 @@ class ShoeStoreListDashboard extends React.Component {
   };
 
   render() {
-    const currentShoeList = this.props.shoes.filter(s => s.storeId === this.props.storeId);
+    console.log(this.props);
+    const currentShoeList = this.props.shoes.filter(({storeId}) => storeId === this.props.storeId);
     return (
       <div className="appContainer">     
         <div className='storesContainer'>
@@ -134,18 +132,19 @@ ShoeStoreListDashboard.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  shoeStores: state.shoeStoreList,
-  shoes: state.shoeList,
-  storeId: state.storeId
+  shoeStores: state.stores.shoeStoreList,
+  shoes: state.shoes.shoeList,
+  storeId: state.storeId.storeId
 });
 
 const mapDispatchToProps = (dispatch) => ({
   addShoe: (id, name, description, price, total, storeId) => { dispatch(addShoe(id, name, description, price, total, storeId)) },
   updateShoe: (id, name, description, price, total, storeId) => { dispatch(updateShoe(id, name, description, price, total, storeId)) },
   removeShoe: (id) => {dispatch(removeShoe(id))},
-  addShoeStore: (id, name, address) => { dispatch(addStore(id, name, address)) },
-  updateShoeStore: (id, name, address) => { dispatch(updateStore(id, name, address)) },
-  removeShoeStore: (id) => { dispatch(updateStoreId) }
+  addStore: (id, name, address) => { dispatch(addStore(id, name, address)) },
+  updateStore: (id, name, address) => { dispatch(updateStore(id, name, address)) },
+  removeStore: (id) => { dispatch(removeStore(id)) },
+  updateStoreId: (id) =>  { dispatch(updateStoreId(id)) }
 });
 
 

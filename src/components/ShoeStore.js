@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class ShoeStore extends React.Component {
   componentDidMount() {
@@ -47,4 +48,9 @@ export default class ShoeStore extends React.Component {
       </div>
     );
   }
+}
+
+ShoeStore.propTypes = {
+  onTrashClick: PropTypes.func.isRequired,
+  onSelectedStoreId: PropTypes.func.isRequired
 }

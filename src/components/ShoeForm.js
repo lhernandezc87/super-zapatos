@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class ShoeForm extends React.Component {
   
@@ -92,4 +93,8 @@ export default class ShoeForm extends React.Component {
       </div>
     );
   }
+}
+
+ShoeForm.propTypes = {
+  onFormSubmitShoe: PropTypes.func.isRequired
 }

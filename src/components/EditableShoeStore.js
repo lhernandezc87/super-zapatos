@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ShoeStoreForm from './ShoeStoreForm.js';
 import ShoeStore from './ShoeStore.js';
 
@@ -53,4 +54,8 @@ export default class EditableShoeStore extends React.Component {
       );
     }
   }
+}
+
+EditableShoeStore.propTypes ={
+  onFormSubmit: PropTypes.func.isRequired
 }
