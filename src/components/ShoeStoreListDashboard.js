@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 
 import EditableShoeStoreList from './EditableShoeStoreList.js'; 
@@ -80,7 +81,7 @@ class ShoeStoreListDashboard extends React.Component {
   };
 
   createShoe = (shoe) => {
-    const id = this.state.shoeList.length + 1;
+    const id = this.props.shoes.length + 1;
     this.props.addShoe(id, shoe.name, shoe.description, shoe.price, shoe.total, this.props.storeId )
   };
 
@@ -93,8 +94,7 @@ class ShoeStoreListDashboard extends React.Component {
   };
 
   render() {
-    console.log(this.props);
-    const currentShoeList = this.props.shoes.filter(({storeId}) => storeId === this.props.storeId);
+    const currentShoeList = _.filter(this.props.shoes, {storeId: this.props.storeId});
     return (
       <div className="appContainer">     
         <div className='storesContainer'>
@@ -132,9 +132,9 @@ ShoeStoreListDashboard.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  shoeStores: state.stores.shoeStoreList,
-  shoes: state.shoes.shoeList,
-  storeId: state.storeId.storeId
+  shoeStores: state.stores,
+  shoes: state.shoes,
+  storeId: state.storeId
 });
 
 const mapDispatchToProps = (dispatch) => ({

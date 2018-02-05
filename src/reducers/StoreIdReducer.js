@@ -1,10 +1,7 @@
-export default function StoreId(state = {storeId: 0 }, action) {
+export default function StoreId(state = 1, action) {
   switch (action.type){
     case 'UPDATE_STOREID':
-      return {
-      	...state, 
-      	storeId: action.payload
-      }
+      return action.payload.storeId
     default:
       return state;         
   }

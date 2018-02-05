@@ -4,7 +4,7 @@ export function addShoe(id=0, name='', description='', price=0, total=0, storeId
     payload: {
       id: id,
       name: name,
-      descritpion: description,
+      description: description,
       price: price,
       total: total,
       storeId: storeId
@@ -18,7 +18,7 @@ export function updateShoe(id=0, name='', description='', price=0, total=0, stor
     payload: {
       id: id,
       name: name,
-      descritpion: description,
+      description: description,
       price: price,
       total: total,
       storeId: storeId

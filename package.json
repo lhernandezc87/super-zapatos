@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "eslint": "^4.16.0",
+    "lodash": "^4.17.4",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-css-grid": "^2.0.0-0",

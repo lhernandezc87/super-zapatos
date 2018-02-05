@@ -1,14 +1,9 @@
-export default function ShoeStore(state={shoeStoreList: []}, action) {
+export default function ShoeStore(state=[], action) {
   switch (action.type){
     case 'ADD_STORE':
-      return {
-      	...state, 
-      	shoeStoreList: [...state.shoeStoreList, action.payload]
-      }
+      return [...state, action.payload]
     case 'UPDATE_STORE':
-      return {
-        ...state,
-        shoeStoreList: state.shoeStoreList.map((shoeStore) => {
+      return state.map((shoeStore) => {
         			if (shoeStore.id === action.payload.id) {
           				return Object.assign({}, shoeStore, {
            				  name: action.payload.name,
@@ -17,13 +12,10 @@ export default function ShoeStore(state={shoeStoreList: []}, action) {
         			} else {
           				return shoeStore;
         			}
-      			  }),
-      }
+      			  })
+              
     case 'REMOVE_STORE':
-      return {
-      	...state,
-      	shoeStoreList: [state.shoeStoreList.filter(t => t.id !== action.payload.id)]
-      }
+      return state.filter(t => t.id !== action.payload.id)
     default:
       return state;         
   }

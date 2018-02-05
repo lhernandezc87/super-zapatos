@@ -11,6 +11,7 @@ export function addStore(id=0, name='', address='') {
 
 export function updateStore(id='', name='', address='') {
   return {
+    type: 'UPDATE_STORE',
     payload: {
       id: id,
       name: name,
@@ -19,11 +20,11 @@ export function updateStore(id='', name='', address='') {
   }
 }
 
-export function removeStore(storeId) {
+export function removeStore(id) {
   return {
     type: 'REMOVE_STORE',
     payload: {
-      storeId: storeId
+      id: id
     }
   }
 }
