@@ -15,7 +15,13 @@ export default function ShoeStore(state=[], action) {
       			  })
               
     case 'REMOVE_STORE':
-      return state.filter(t => t.id !== action.payload.id)
+      return state.filter(t => t.id !== action.payload)
+    case 'LOAD_STORES': {
+      if (!action.error) {
+        return action.payload;
+      }
+      return state;
+    }
     default:
       return state;         
   }

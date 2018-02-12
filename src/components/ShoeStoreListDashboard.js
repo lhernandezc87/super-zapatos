@@ -8,33 +8,16 @@ import EditableShoeStoreList from './EditableShoeStoreList.js';
 import ToggleableShoeStoreForm from './ToggleableShoeStoreForm.js';
 import ShoeListDashboard from './ShoeListDashboard.js';
 
-import { addStore, updateStore, removeStore } from '../actions/ShoeStoreActions';
-import { addShoe, updateShoe, removeShoe } from '../actions/ShoeActions';
+import { addStore, updateStore, removeStore, loadStores } from '../actions/ShoeStoreActions';
+import { addShoe, updateShoe, removeShoe, loadShoes } from '../actions/ShoeActions';
 import { updateStoreId } from '../actions/StoreIdActions';
 
-const defaultStoreList = [
-  {id: 1, name: 'Payless San Jose', address: 'San Jose, 25 m este del teatro nacional'},
-  {id: 2, name: 'Payless Heredia', address: 'Heredia, 100 m oeste del fortin'},
-  {id: 3, name: 'Payless Cartago', address: 'cartago, 150 m sur de tenchas'},
-];
 
-const defaultShoeList = [
-  {id: 1, name: 'Mocacin', description: 'color negro', price: 16000, total: 3, storeId: 2},
-  {id: 2, name: 'Chancletas', description: 'color azul', price: 6000, total: 2, storeId: 2},
-  {id: 3, name: 'Mocacin', description: 'color rojo', price: 16000, total: 3, storeId: 1},
-  {id: 4, name: 'Tacos', description: 'color verde', price: 45000, total: 1, storeId: 1},
-];
-
-
-class ShoeStoreListDashboard extends React.Component {
+class ShoeStoreListDashboard extends React.Component {  
   
   componentDidMount(){
-    defaultStoreList.map((store) => (
-      this.props.addStore(store.id, store.name, store.address)
-    ));
-    defaultShoeList.map((shoe) => (
-      this.props.addShoe(shoe.id, shoe.name, shoe.description, shoe.price, shoe.total, shoe.storeId)
-    ));
+    this.props.loadStores();
+    this.props.loadShoes();
   };
 
   handleCreateFormSubmit = (shoeStore) => {
@@ -86,7 +69,7 @@ class ShoeStoreListDashboard extends React.Component {
   };
 
   updateShoe = (attrs) => {
-    this.props.updateShoe(attrs.id, attrs.name, attrs.description, attrs.price, attrs.total, attrs.storeId);
+    this.props.updateShoe(attrs.id, attrs.name, attrs.description, attrs.price, attrs.total, this.props.storeId);
   };
 
   deleteShoe = (shoeId) => {
@@ -128,7 +111,9 @@ ShoeStoreListDashboard.propTypes = {
   updateShoe: PropTypes.func,
   removeShoe: PropTypes.func,
   removeStore: PropTypes.func,
-  updateStoreId: PropTypes.func
+  updateStoreId: PropTypes.func,
+  loadStores: PropTypes.func,
+  loadShoes: PropTypes.func
 };
 
 const mapStateToProps = (state) => ({
@@ -144,7 +129,9 @@ const mapDispatchToProps = (dispatch) => ({
   addStore: (id, name, address) => { dispatch(addStore(id, name, address)) },
   updateStore: (id, name, address) => { dispatch(updateStore(id, name, address)) },
   removeStore: (id) => { dispatch(removeStore(id)) },
-  updateStoreId: (id) =>  { dispatch(updateStoreId(id)) }
+  updateStoreId: (id) =>  { dispatch(updateStoreId(id)) },
+  loadStores: () => { dispatch(loadStores()) },
+  loadShoes: () => { dispatch(loadShoes()) }
 });
 
 

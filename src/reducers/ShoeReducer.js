@@ -16,7 +16,14 @@ export default function Shoe(state = [], action) {
         			}
       			  })            
     case 'REMOVE_SHOE':
-      return state.filter(t => t.id !== action.payload.id)
+      return state.filter(t => t.id !== action.payload)
+    case 'LOAD_SHOES': {
+      if (!action.error) {
+        return action.payload;
+      }
+      return state;
+    }
+      
     default:
       return state;         
   }

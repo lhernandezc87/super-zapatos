@@ -1,0 +1,53 @@
+{
+  "stores": [
+    {
+      "id": 1,
+      "name": "Payless San Jose",
+      "address": "San Jose, 250 m este del teatro nacional"
+    },
+    {
+      "id": 2,
+      "name": "Payless Heredia",
+      "address": "Heredia, 100 m oeste del fortin"
+    },
+    {
+      "id": 3,
+      "name": " Payless Cartago",
+      "address": "150 mts sur de tencha"
+    }
+  ],
+  "shoes": [
+    {
+      "id": 1,
+      "name": "Mocacin",
+      "description": "color negro",
+      "price": 16000,
+      "total": 3,
+      "storeId": 2
+    },
+    {
+      "id": 2,
+      "name": "Chancletas",
+      "description": "color azul",
+      "price": 6000,
+      "total": 2,
+      "storeId": 2
+    },
+    {
+      "id": 3,
+      "name": "Mocacine",
+      "description": "color rojo",
+      "price": 16000,
+      "total": "4",
+      "storeId": 1
+    },
+    {
+      "id": 4,
+      "name": "Tacos",
+      "description": "color verde",
+      "price": 45000,
+      "total": 1,
+      "storeId": 1
+    }
+  ]
+}
