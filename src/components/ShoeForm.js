@@ -57,7 +57,7 @@ export default class ShoeForm extends React.Component {
              <div className='field'>
               <label>Price</label>
               <input
-                type='text'
+                type='number'
                 placeholder='Price'
                 name='price'
                 value={this.state.fields.price}
@@ -67,7 +67,7 @@ export default class ShoeForm extends React.Component {
              <div className='field'>
               <label>Total</label>
               <input
-                type='text'
+                type='number'
                 placeholder='Total'
                 name='total'
                 value={this.state.fields.total}
@@ -96,5 +96,6 @@ export default class ShoeForm extends React.Component {
 }
 
 ShoeForm.propTypes = {
-  onFormSubmitShoe: PropTypes.func.isRequired
+  onFormSubmitShoe: PropTypes.func.isRequired,
+  price: PropTypes.number
 }

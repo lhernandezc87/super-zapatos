@@ -11,6 +11,7 @@ import ShoeListDashboard from './ShoeListDashboard.js';
 import { addStore, updateStore, removeStore, loadStores } from '../actions/ShoeStoreActions';
 import { addShoe, updateShoe, removeShoe, loadShoes } from '../actions/ShoeActions';
 import { updateStoreId } from '../actions/StoreIdActions';
+import { getStoresList, getShoesList } from '../selectors'
 
 
 class ShoeStoreListDashboard extends React.Component {  
@@ -34,7 +35,7 @@ class ShoeStoreListDashboard extends React.Component {
 
 
   createShoeStore = (shoeStore) => {
-    const newStoreId = this.props.shoeStores.length + 1;
+    const newStoreId = (_.last(this.props.shoeStores).id || 0) + 1;
     this.props.addStore(newStoreId.id, shoeStore.name, shoeStore.address);
   };
 
@@ -64,7 +65,7 @@ class ShoeStoreListDashboard extends React.Component {
   };
 
   createShoe = (shoe) => {
-    const id = this.props.shoes.length + 1;
+    const id = (_.last(this.props.shoes).id || 0) + 1;
     this.props.addShoe(id, shoe.name, shoe.description, shoe.price, shoe.total, this.props.storeId )
   };
 
@@ -117,8 +118,10 @@ ShoeStoreListDashboard.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  shoeStores: state.stores,
-  shoes: state.shoes,
+  shoeStores: getStoresList(state),
+  shoes: getShoesList(state),
+  //shoeStores: state.stores,
+  //shoes: state.shoes,
   storeId: state.storeId
 });
 

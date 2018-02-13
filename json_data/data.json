@@ -35,10 +35,10 @@
     },
     {
       "id": 3,
-      "name": "Mocacine",
-      "description": "color rojo",
-      "price": 16000,
-      "total": "4",
+      "name": "Mocacin",
+      "description": "color gris, suela negra",
+      "price": "16000",
+      "total": "12",
       "storeId": 1
     },
     {
@@ -48,6 +48,22 @@
       "price": 45000,
       "total": 1,
       "storeId": 1
+    },
+    {
+      "id": 5,
+      "name": "Botas",
+      "description": "Altas, negras, cuero",
+      "price": "60000",
+      "total": "6",
+      "storeId": 3
+    },
+    {
+      "id": 6,
+      "name": "Pantuflas",
+      "description": "Minnie Mouse, rosadas",
+      "price": "6500",
+      "total": "8",
+      "storeId": 3
     }
   ]
 }
