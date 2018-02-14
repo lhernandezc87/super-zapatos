@@ -5,7 +5,7 @@ export default class ShoeForm extends React.Component {
   
   state = {
     fields: {
-      name:this.props.name || '',
+      name: this.props.name || '',
       description: this.props.description || '',
       price: this.props.price || '',
       total: this.props.total || '',
