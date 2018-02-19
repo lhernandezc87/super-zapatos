@@ -1,5 +1,4 @@
 import React from 'react';
-import { BrowserRouter as Router} from 'react-router-dom';
 
 class LoginIndex extends React.Component {
 
@@ -29,12 +28,13 @@ class LoginIndex extends React.Component {
   }
 
   checkUserData = () => {
-   return fetch(users_url, {method: "GET"})
+    const {history} = this.props
+    return fetch(users_url, {method: "GET"})
             .then((resp) => resp.json())
             .then((data) => {
             	data.map((user) => {
             		if (this.checkUser(user)) {
-            			Router.push('/stores');
+            			return history.push('/stores');
             		}
             	})
             })

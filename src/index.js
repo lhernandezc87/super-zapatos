@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-do
 import ShoeStoreListDashboard from './components/ShoeStoreListDashboard.js';
 import LoginIndex from './components/login/LoginIndex.js'
 import store from './store';
+import history from './history'
 
 import './index.css';
 import './App.css';
@@ -21,7 +22,7 @@ const PrivateRoute = ({component: Component, ...rest}) => (
 
 
 const Appi = () => (
-  <Router>
+  <Router history={history}>
     <Switch>
       <PrivateRoute exact path='/stores' component={ShoeStoreListDashboard}/>
       <Route exact path='/' component={LoginIndex} />
