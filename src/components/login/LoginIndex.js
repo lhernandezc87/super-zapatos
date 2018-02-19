@@ -1,17 +1,56 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
+import { BrowserRouter as Router} from 'react-router-dom';
 
 class LoginIndex extends React.Component {
 
 	state = {
 		fields: {
  		  user: '',
- 		  password: ''
+ 		  password: '',
 		}
 	};
 
+
+  handleLoginClear = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("password");
+    this.setState({fields: {user: '', password: ''}});
+
+  }
+
+  handleLogin = () => {
+    this.checkUserData();
+  } 
+
+  onChangeText = (evt) => {
+  	const fields = this.state.fields;
+    fields[evt.target.name] = evt.target.value;
+    this.setState({fields: fields});
+  }
+
+  checkUserData = () => {
+   return fetch(users_url, {method: "GET"})
+            .then((resp) => resp.json())
+            .then((data) => {
+            	data.map((user) => {
+            		if (this.checkUser(user)) {
+            			Router.push('/stores');
+            		}
+            	})
+            })
+         .catch(function(error) {
+          return false;     
+         });
+  }
+
+  checkUser(user){
+	if (user.user === this.state.fields.user && user.password === this.state.fields.password) {
+		localStorage.setItem("user", this.state.fields.user);
+        localStorage.setItem("password", this.state.fields.password);
+        return true;
+	}
+	return false;
+  }
 
  render(){
  	return (
@@ -25,7 +64,7 @@ class LoginIndex extends React.Component {
  		      type="text"
  		      placeholder="User name"
  		      name="user"
- 		      value={this.state.fields.name}
+ 		      value={this.state.fields.user}
  		      onChange={this.onChangeText}
  		    />
  		  </div>
@@ -62,5 +101,7 @@ class LoginIndex extends React.Component {
  } 
 
 }
+
+const users_url = 'http://localhost:4000/users'
 
 export default LoginIndex

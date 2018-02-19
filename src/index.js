@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
 
 
 import ShoeStoreListDashboard from './components/ShoeStoreListDashboard.js';
@@ -11,11 +11,19 @@ import store from './store';
 import './index.css';
 import './App.css';
 
+const PrivateRoute = ({component: Component, ...rest}) => (
+  <Route {...rest} render={(props) => (
+  	localStorage.getItem("user") && localStorage.getItem("password") 
+  	? <Component {...props} />
+  	: <Redirect to='/' />
+  )}/>
+)
+
 
 const Appi = () => (
   <Router>
     <Switch>
-      <Route exact path='/stores' component={ShoeStoreListDashboard}/>
+      <PrivateRoute exact path='/stores' component={ShoeStoreListDashboard}/>
       <Route exact path='/' component={LoginIndex} />
     </Switch>
   </Router>

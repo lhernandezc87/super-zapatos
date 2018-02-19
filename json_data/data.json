@@ -78,5 +78,12 @@
       "total": "4",
       "storeId": 4
     }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "user": "luishc",
+      "password": "luishc"
+    }
   ]
 }
