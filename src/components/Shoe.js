@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class Shoe extends React.Component {
 
@@ -40,4 +41,8 @@ export default class Shoe extends React.Component {
       </div>
     );
   }
+}
+
+Shoe.propTypes = {
+  onTrashClickShoe: PropTypes.func.isRequired
 }

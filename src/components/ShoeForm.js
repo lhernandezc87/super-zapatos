@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class ShoeForm extends React.Component {
   
   state = {
     fields: {
-      name:this.props.name || '',
+      name: this.props.name || '',
       description: this.props.description || '',
       price: this.props.price || '',
       total: this.props.total || '',
@@ -56,7 +57,7 @@ export default class ShoeForm extends React.Component {
              <div className='field'>
               <label>Price</label>
               <input
-                type='text'
+                type='number'
                 placeholder='Price'
                 name='price'
                 value={this.state.fields.price}
@@ -66,7 +67,7 @@ export default class ShoeForm extends React.Component {
              <div className='field'>
               <label>Total</label>
               <input
-                type='text'
+                type='number'
                 placeholder='Total'
                 name='total'
                 value={this.state.fields.total}
@@ -92,4 +93,9 @@ export default class ShoeForm extends React.Component {
       </div>
     );
   }
+}
+
+ShoeForm.propTypes = {
+  onFormSubmitShoe: PropTypes.func.isRequired,
+  price: PropTypes.number
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ShoeStoreForm from './ShoeStoreForm.js';
 
 export default class ToggleableShoeStoreForm extends React.Component {
@@ -40,4 +41,8 @@ export default class ToggleableShoeStoreForm extends React.Component {
       );
     }
   }
+}
+
+ToggleableShoeStoreForm.propTypes = {
+  onFormSubmit: PropTypes.func.isRequired
 }

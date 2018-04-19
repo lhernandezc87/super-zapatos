@@ -1,19 +1,26 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
+
+
 import EditableShoeStoreList from './EditableShoeStoreList.js'; 
 import ToggleableShoeStoreForm from './ToggleableShoeStoreForm.js';
 import ShoeListDashboard from './ShoeListDashboard.js';
 
+import { addStore, updateStore, removeStore, loadStores } from '../actions/ShoeStoreActions';
+import { addShoe, updateShoe, removeShoe, loadShoes } from '../actions/ShoeActions';
+import { updateStoreId } from '../actions/StoreIdActions';
+import { getStoresList, getShoesList } from '../selectors'
 
-export default class ShoeStoreListDashboard extends React.Component {
 
-  state = {
-    shoeStoreList: defaultStoreList,
-    shoeList: defaultShoeList,
-    storeId: 1,
+class ShoeStoreListDashboard extends React.Component {  
+  
+  componentDidMount(){
+    this.props.loadStores();
+    this.props.loadShoes();
   };
 
-  //cargar tiendas
-  //componentWillUnmount
   handleCreateFormSubmit = (shoeStore) => {
     this.createShoeStore(shoeStore);
   };
@@ -26,39 +33,18 @@ export default class ShoeStoreListDashboard extends React.Component {
     this.deleteShoeStore(shoeStoreId);
   };
 
-  handleShowShoes = (shoeStoreId) => {
-    this.setState({shoeStoreId: shoeStoreId});
-  };
 
   createShoeStore = (shoeStore) => {
-    const newStore = {};
-    newStore.name = shoeStore.name;
-    newStore.address = shoeStore.address;
-    newStore.id = this.state.shoeStoreList.length + 1;
-    const newShoeStoreList = [...this.state.shoeStoreList, newStore];
-    this.setState({shoeStoreList: newShoeStoreList});
+    const newStoreId = (_.last(this.props.shoeStores).id || 0) + 1;
+    this.props.addStore(newStoreId.id, shoeStore.name, shoeStore.address);
   };
 
   updateShoeStore = (attrs) => {
-    this.setState({
-      shoeStoreList: this.state.shoeStoreList.map((shoeStore) => {
-        if (shoeStore.id === attrs.id) {
-          return Object.assign({}, shoeStore, {
-            name: attrs.name,
-            address: attrs.address,
-          });
-        } else {
-          return shoeStore;
-        }
-      }),
-    });
+    this.props.updateStore(attrs.id, attrs.name, attrs.address);
   };
 
   deleteShoeStore = (shoeStoreId) => {
-    this.setState({
-      shoeStoreList: this.state.shoeStoreList.filter(t => t.id !== shoeStoreId),
-    });
-
+    this.props.removeStore(shoeStoreId);
   };
 
   //shoe code
@@ -75,53 +61,29 @@ export default class ShoeStoreListDashboard extends React.Component {
   };
 
   handleSelectedStoreId = (storeId) => {
-    this.setState({storeId: storeId});
-  }
+    this.props.updateStoreId(storeId);
+  };
 
   createShoe = (shoe) => {
-    const newShoe = {};
-    newShoe.name = shoe.name;
-    newShoe.description = shoe.description;
-    newShoe.price = shoe.price;
-    newShoe.total = shoe.total;
-    newShoe.storeId = this.state.storeId;
-    newShoe.id = this.state.shoeList.length + 1;
-    const newShoeList = [...this.state.shoeList, newShoe];
-    this.setState({shoeList: newShoeList});
+    const id = (_.last(this.props.shoes).id || 0) + 1;
+    this.props.addShoe(id, shoe.name, shoe.description, shoe.price, shoe.total, this.props.storeId )
   };
 
   updateShoe = (attrs) => {
-    this.setState({
-      shoeList: this.state.shoeList.map((shoe) => {
-        if (shoe.id === attrs.id) {
-          return Object.assign({}, shoe, {
-            name: attrs.name,
-            description: attrs.description,
-            price: attrs.price,
-            total: attrs.total,
-            storeId: this.state.storeId,
-          });
-        } else {
-          return shoe;
-        }
-      }),
-    });
+    this.props.updateShoe(attrs.id, attrs.name, attrs.description, attrs.price, attrs.total, this.props.storeId);
   };
 
   deleteShoe = (shoeId) => {
-    this.setState({
-      shoeList: this.state.shoeList.filter(t => t.id !== shoeId),
-    });
-
+    this.props.removeShoe(shoeId);
   };
 
   render() {
-    const currentShoeList = this.state.shoeList.filter(s => s.storeId === this.state.storeId);
+    const currentShoeList = _.filter(this.props.shoes, {storeId: this.props.storeId});
     return (
       <div className="appContainer">     
         <div className='storesContainer'>
           <EditableShoeStoreList
-            shoeStores={this.state.shoeStoreList}
+            shoeStores={this.props.shoeStores}
             onFormSubmit={this.handleEditFormSubmit}
             onTrashClick={this.handleTrashClick}
             onSelectedStoreId={this.handleSelectedStoreId}
@@ -143,15 +105,37 @@ export default class ShoeStoreListDashboard extends React.Component {
   }
 }
 
-const defaultStoreList = [
-  {id: 1, name: 'Payless San Jose', address: 'San Jose, 25 m este del teatro nacional'},
-  {id: 2, name: 'Payless Heredia', address: 'Heredia, 100 m oeste del fortin'},
-  {id: 3, name: 'Payless Cartago', address: 'cartago, 150 m sur de tenchas'},
-];
+ShoeStoreListDashboard.propTypes = {
+  addShoe: PropTypes.func,
+  addStore: PropTypes.func,
+  updateStore: PropTypes.func,
+  updateShoe: PropTypes.func,
+  removeShoe: PropTypes.func,
+  removeStore: PropTypes.func,
+  updateStoreId: PropTypes.func,
+  loadStores: PropTypes.func,
+  loadShoes: PropTypes.func
+};
 
-const defaultShoeList = [
-  {id: 1, name: 'Mocacin', description: 'color negro', price: 16000, total: 3, storeId: 2},
-  {id: 2, name: 'Chancletas', description: 'color azul', price: 6000, total: 2, storeId: 2},
-  {id: 3, name: 'Mocacin', description: 'color rojo', price: 16000, total: 3, storeId: 1},
-  {id: 4, name: 'Tacos', description: 'color verde', price: 45000, total: 1, storeId: 1},
-];
+const mapStateToProps = (state) => ({
+  shoeStores: getStoresList(state),
+  shoes: getShoesList(state),
+  //shoeStores: state.stores,
+  //shoes: state.shoes,
+  storeId: state.storeId
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  addShoe: (id, name, description, price, total, storeId) => { dispatch(addShoe(id, name, description, price, total, storeId)) },
+  updateShoe: (id, name, description, price, total, storeId) => { dispatch(updateShoe(id, name, description, price, total, storeId)) },
+  removeShoe: (id) => {dispatch(removeShoe(id))},
+  addStore: (id, name, address) => { dispatch(addStore(id, name, address)) },
+  updateStore: (id, name, address) => { dispatch(updateStore(id, name, address)) },
+  removeStore: (id) => { dispatch(removeStore(id)) },
+  updateStoreId: (id) =>  { dispatch(updateStoreId(id)) },
+  loadStores: () => { dispatch(loadStores()) },
+  loadShoes: () => { dispatch(loadShoes()) }
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShoeStoreListDashboard);

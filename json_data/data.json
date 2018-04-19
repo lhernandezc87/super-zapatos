@@ -1,0 +1,89 @@
+{
+  "stores": [
+    {
+      "id": 1,
+      "name": "Payless San Jose",
+      "address": "San Jose, 250 m este del teatro nacional"
+    },
+    {
+      "id": 2,
+      "name": "Payless Heredia",
+      "address": "Heredia, 100 m oeste del fortin"
+    },
+    {
+      "id": 3,
+      "name": " Payless Cartago",
+      "address": "150 mts sur de tencha"
+    },
+    {
+      "id": 4,
+      "name": "Addidas",
+      "address": "Heredia Centro, frente al mercado central"
+    }
+  ],
+  "shoes": [
+    {
+      "id": 1,
+      "name": "Mocacin",
+      "description": "color negro",
+      "price": 16000,
+      "total": 3,
+      "storeId": 2
+    },
+    {
+      "id": 2,
+      "name": "Chancletas",
+      "description": "color azul",
+      "price": 6000,
+      "total": 2,
+      "storeId": 2
+    },
+    {
+      "id": 3,
+      "name": "Mocacin",
+      "description": "color gris, suela negra",
+      "price": "16000",
+      "total": "12",
+      "storeId": 1
+    },
+    {
+      "id": 4,
+      "name": "Tacos",
+      "description": "color verde",
+      "price": 45000,
+      "total": 1,
+      "storeId": 1
+    },
+    {
+      "id": 5,
+      "name": "Botas",
+      "description": "Altas, negras, cuero",
+      "price": "60000",
+      "total": "6",
+      "storeId": 3
+    },
+    {
+      "id": 6,
+      "name": "Pantuflas",
+      "description": "Minnie Mouse, rosadas",
+      "price": "6500",
+      "total": "8",
+      "storeId": 3
+    },
+    {
+      "id": 7,
+      "name": "Tennis Country Rip",
+      "description": "Negras, limited edition ",
+      "price": "78000",
+      "total": "4",
+      "storeId": 4
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "user": "luishc",
+      "password": "luishc"
+    }
+  ]
+}
